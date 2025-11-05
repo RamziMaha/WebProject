@@ -1,24 +1,30 @@
-# project-web
+# WebProject
 
-## Project setup
-```
-npm install
-```
+A small web project built with HTML, Tailwind CSS, and Vue.js.
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## Description
 
-### Compiles and minifies for production
-```
-npm run build
-```
+This project contains several pages to organize different kinds of tasks:
+- Dashboard (project.html)
+- Group Project (group-project.html)
+- Personal Tasks (personal-tasks.html)
+- Grocery List (grocery-list.html)
+- Trip List (trip-list.html)
 
-### Lints and fixes files
-```
-npm run lint
-```
+Each page has a simple and clean layout made with Tailwind CSS.
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Vue.js Feature
+
+The Grocery List page includes a small interactive part made with Vue.js.  
+You can:
+- Add new grocery items  
+- Check or uncheck them  
+- Remove items  
+- See all changes instantly without reloading the page
+
+## Technologies
+
+- HTML  
+- Tailwind CSS  
+- Font Awesome  
+- Vue.js

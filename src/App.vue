@@ -1,26 +1,30 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="min-h-screen bg-sand-50 text-cocoa-700">
+    
+    <div v-if="isAuth">
+      <RouterView />
+    </div>
+
+    
+    <div v-else class="flex">
+      <AppSidebar />
+      <main class="flex-1">
+        <AppTopbar />
+        <div class="px-10 py-8">
+          <RouterView />
+        </div>
+      </main>
+    </div>
+  </div>
+  
 </template>
 
-<script>
-import HelloWorld from './components/HelloWorld.vue'
+<script setup>
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+import AppSidebar from './components/AppSidebar.vue'
+import AppTopbar from './components/AppTopbar.vue'
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+const route = useRoute()
+const isAuth = computed(() => route.name === 'login' || route.meta.layout === 'auth')
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>

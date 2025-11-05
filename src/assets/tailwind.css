@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Inter', 'Nunito Sans', 'Segoe UI', Arial, sans-serif;
+    background-color: #f6f2e8;
+  }
+
+  body {
+    @apply bg-[#f6f2e8] text-[#2f2b26];
+  }
+}
+
+@layer components {
+  .surface-card {
+    @apply rounded-2xl border border-[#d9d1c3] bg-[#efebe4] shadow-tile transition duration-150 ease-in-out;
+  }
+
+  .surface-card:hover {
+    @apply -translate-y-0.5 transform shadow-lg;
+  }
+
+  .pill {
+    @apply rounded-full bg-[#e7dfd2] text-[#2f2b26] text-sm px-3 py-1 border border-[#d1c7b8];
+  }
+}
+
