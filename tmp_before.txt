@@ -1,0 +1,122 @@
+﻿<template>
+  <section>
+    <div class="flex items-center justify-between">
+      <h2 class="text-3xl font-extrabold">{{ listTitle }}</h2>
+      <button @click="showCreate = true" class="px-3 py-2 rounded-xl bg-cocoa-700 text-white font-semibold">New task</button>
+    </div>
+
+    <div class="mt-6">
+      <div v-if="loading" class="text-[#9c8f7f]">Loadingâ€¦</div>
+      <div v-else-if="error" class="text-red-700">{{ error }}</div>
+      <ul v-else class="space-y-3">
+        <li v-for="t in tasks" :key="t.id" class="p-3 rounded-lg bg-white border border-[#e3dacb] flex items-center justify-between">
+          <div>
+            <div class="font-semibold">{{ t.title }}</div>
+            <div v-if="t.description" class="text-sm text-[#6f655a]">{{ t.description }}</div>
+            <div class="text-xs text-[#9c8f7f]">status: {{ t.status }} â€¢ priority: {{ t.priority }}<span v-if="t.dueAt"> â€¢ due: {{ formatDate(t.dueAt) }}</span></div>
+          </div>
+          <div class="flex gap-2">
+            <button @click="cycleStatus(t)" class="px-2 py-1 rounded bg-[#e7dfd2] border border-[#d1c7b8]">Next</button>
+            <button @click="removeTask(t)" class="px-2 py-1 rounded bg-red-600 text-white">Delete</button>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <CreateTaskModal :open="showCreate" @close="showCreate = false" @create="onCreateFromModal" />
+  </section>
+</template>
+
+<script setup>
+import { ref, onMounted, watch } from 'vue'
+import { useRoute } from 'vue-router'
+import { fetchTasks, createTask, updateTask, deleteTask } from '../api/tasks'
+import CreateTaskModal from '../components/CreateTaskModal.vue'
+
+const route = useRoute()
+const listId = ref(Number(route.params.id))
+const listTitle = ref('List')
+const tasks = ref([])
+const loading = ref(false)
+const error = ref('')
+const form = ref({ title: '', priority: 'med', due: '', description: '' })
+const showCreate = ref(false)
+
+watch(() => route.params.id, (val) => {
+  listId.value = Number(val)
+  load()
+})
+
+async function load() {
+  loading.value = true
+  error.value = ''
+  try {
+    const data = await fetchTasks({ listId: listId.value })
+    tasks.value = data
+    // Try to infer list title from tasks if available
+    if (tasks.value.length && tasks.value[0].listName) {
+      listTitle.value = tasks.value[0].listName
+    }
+  } catch (e) {
+    error.value = e instanceof Error ? e.message : 'Failed to load tasks'
+  } finally {
+    loading.value = false
+  }
+}
+
+async function onAddTask() {
+  const title = form.value.title.trim()
+  if (!title) return
+  try {
+    const payload = { listId: listId.value, title, priority: form.value.priority }
+    if (form.value.description) payload.description = form.value.description
+    if (form.value.due) payload.dueAt = new Date(form.value.due).toISOString()
+    const created = await createTask(payload)
+    tasks.value.push(created)
+    form.value = { title: '', priority: 'med', due: '', description: '' }
+  } catch (e) {
+    alert(e instanceof Error ? e.message : 'Failed to add task')
+  }
+}
+
+async function onCreateFromModal(payload) {
+  form.value.title = payload.title
+  form.value.priority = payload.priority
+  form.value.description = payload.description
+  form.value.due = payload.due?.value || payload.due || ''
+  await onAddTask()
+  showCreate.value = false
+}
+
+function nextStatus(status) {
+  return status === 'todo' ? 'doing' : status === 'doing' ? 'done' : 'todo'
+}
+
+async function cycleStatus(t) {
+  const newStatus = nextStatus(t.status)
+  try {
+    const updated = await updateTask(t.id, { status: newStatus })
+    t.status = updated.status
+  } catch (e) {
+    alert(e instanceof Error ? e.message : 'Failed to update task')
+  }
+}
+
+async function removeTask(t) {
+  try {
+    await deleteTask(t.id)
+    tasks.value = tasks.value.filter(x => x.id !== t.id)
+  } catch (e) {
+    alert(e instanceof Error ? e.message : 'Failed to delete task')
+  }
+}
+
+onMounted(load)
+
+function formatDate(iso) {
+  try {
+    const d = new Date(iso)
+    return d.toLocaleDateString()
+  } catch { return iso }
+}
+</script>
+

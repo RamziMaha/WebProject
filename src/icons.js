@@ -9,6 +9,24 @@ export const icons = {
   users: `<svg xmlns='http://www.w3.org/2000/svg' class='w-6 h-6' fill='currentColor' viewBox='0 0 20 20'><path d='M10 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm-7 7a7 7 0 0 1 14 0H3Z'/></svg>`,
   person: `<svg xmlns='http://www.w3.org/2000/svg' class='w-6 h-6' fill='currentColor' viewBox='0 0 20 20'><path d='M10 10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-7 7a7 7 0 0 1 14 0H3Z'/></svg>`,
   basket: `<svg xmlns='http://www.w3.org/2000/svg' class='w-6 h-6' fill='currentColor' viewBox='0 0 20 20'><path d='M5 5h10l2 4H3l2-4Zm-2 6h14l-1 5H4l-1-5Z'/></svg>`,
-  search: `<svg xmlns='http://www.w3.org/2000/svg' class='w-4 h-4' fill='currentColor' viewBox='0 0 20 20'><path d='M12.9 14.32a7 7 0 1 1 1.41-1.41l3.4 3.4-1.41 1.41-3.4-3.4Z'/></svg>`
+  search: `<svg xmlns='http://www.w3.org/2000/svg' class='w-4 h-4' fill='currentColor' viewBox='0 0 20 20'><path d='M12.9 14.32a7 7 0 1 1 1.41-1.41l3.4 3.4-1.41 1.41-3.4-3.4Z'/></svg>`,
+  trash: `<svg xmlns='http://www.w3.org/2000/svg' class='w-4 h-4' fill='currentColor' viewBox='0 0 20 20'><path d='M6 7h2v9H6V7Zm6 0h-2v9h2V7ZM4 5h12v2H4V5Zm3-2h6v2H7V3Zm-1 4h8l-1 11H7L6 7Z'/></svg>`
+}
+
+// Return an emoji wrapped in a span sized to fit icon slots
+export function emojiForType(type) {
+  const wrap = (char) => `<span class='emoji-icon' role='img' aria-hidden='false'>${char}</span>`
+  switch (type) {
+    case 'personal':
+      return wrap('🙂')
+    case 'work':
+      return wrap('💼')
+    case 'grocery':
+      return wrap('🛒')
+    case 'trip':
+      return wrap('✈️')
+    default:
+      return wrap('📝')
+  }
 }
 

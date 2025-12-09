@@ -9,12 +9,22 @@
     "lint": "eslint . --ext .js,.vue"
   },
   "dependencies": {
+    "bcrypt": "^6.0.0",
+    "csurf": "^1.11.0",
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.2.1",
+    "mysql2": "^3.15.3",
+    "sequelize": "^6.37.7",
     "vue": "^3.2.13",
-    "vue-router": "^4.2.5"
+    "vue-router": "^4.2.5",
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
     "@babel/eslint-parser": "^7.12.16",
+    "@types/bcrypt": "^6.0.0",
+    "@types/csurf": "^1.11.5",
+    "@types/express": "^5.0.5",
     "@vitejs/plugin-vue": "^5.2.4",
     "autoprefixer": "^10.4.16",
     "eslint": "^7.32.0",
