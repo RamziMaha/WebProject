@@ -21,7 +21,6 @@ CREATE DATABASE toodoz;
 2. Backend (Server)
 Navigate to the server directory, install dependencies, and configure the environment.
 
-Bash
 
 cd server
 npm install
